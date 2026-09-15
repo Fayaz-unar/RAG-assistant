@@ -24,249 +24,170 @@ st.set_page_config(
 # CUSTOM CSS
 # ==================================================
 
-st.markdown(
-    """
-    <style>
+st.markdown("""
+<style>
 
-    /* ==============================================
-       GLOBAL
-       ============================================== */
+.stApp {
+    background-color: #080d16;
+    color: #e8edf5;
+}
 
-    .stApp {
-        background: #080d16;
-        color: #e8edf5;
-    }
+.block-container {
+    max-width: 1350px;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
 
-    .block-container {
-        max-width: 1350px;
-        padding-top: 2rem;
-        padding-bottom: 4rem;
-    }
+section[data-testid="stSidebar"] {
+    background-color: #0b1220;
+    border-right: 1px solid #1c2a3d;
+}
 
-    /* ==============================================
-       SIDEBAR
-       ============================================== */
+.brand {
+    font-size: 26px;
+    font-weight: 800;
+}
 
-    section[data-testid="stSidebar"] {
-        background: #0b1220;
-        border-right: 1px solid #1c2a3d;
-    }
+.brand span {
+    color: #38bdf8;
+}
 
-    section[data-testid="stSidebar"] .block-container {
-        padding-top: 1.8rem;
-    }
+.brand-sub {
+    color: #718096;
+    font-size: 13px;
+}
 
-    /* ==============================================
-       BRAND
-       ============================================== */
+.hero {
+    padding: 25px 0 20px 0;
+}
 
-    .brand {
-        font-size: 25px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-    }
+.hero-small {
+    color: #38bdf8;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-    .brand span {
-        color: #38bdf8;
-    }
+.hero-title {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 8px;
+}
 
-    .brand-sub {
-        color: #718096;
-        font-size: 13px;
-        margin-top: 3px;
-    }
+.hero-description {
+    color: #8b98aa;
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 700px;
+    line-height: 1.6;
+}
 
-    /* ==============================================
-       HERO
-       ============================================== */
+.tool-card {
+    background: linear-gradient(145deg, #101a2b, #0c1422);
+    border: 1px solid #1d3048;
+    border-radius: 16px;
+    padding: 22px;
+    min-height: 145px;
+}
 
-    .hero {
-        padding: 25px 0 15px 0;
-    }
+.tool-icon {
+    font-size: 28px;
+}
 
-    .hero-small {
-        color: #38bdf8;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-    }
+.tool-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 10px;
+}
 
-    .hero-title {
-        font-size: 44px;
-        font-weight: 800;
-        line-height: 1.1;
-        letter-spacing: -1.5px;
-        margin: 0;
-    }
+.tool-description {
+    color: #7f8da1;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 6px;
+}
 
-    .hero-description {
-        color: #8b98aa;
-        font-size: 16px;
-        margin-top: 12px;
-        max-width: 700px;
-        line-height: 1.6;
-    }
+.stat-card {
+    background-color: #0e1725;
+    border: 1px solid #1c2b40;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+}
 
-    /* ==============================================
-       TOOL CARDS
-       ============================================== */
+.stat-number {
+    color: #38bdf8;
+    font-size: 24px;
+    font-weight: 800;
+}
 
-    .tool-card {
-        background: linear-gradient(
-            145deg,
-            #101a2b,
-            #0c1422
-        );
+.stat-label {
+    color: #748196;
+    font-size: 12px;
+    margin-top: 4px;
+}
 
-        border: 1px solid #1d3048;
-        border-radius: 16px;
+.workspace {
+    background-color: #0d1624;
+    border: 1px solid #1c2b40;
+    border-radius: 18px;
+    padding: 24px;
+    margin-top: 24px;
+}
 
-        padding: 22px;
+.workspace-title {
+    font-size: 23px;
+    font-weight: 700;
+}
 
-        height: 145px;
+.workspace-description {
+    color: #7e8b9e;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
 
-        transition: all 0.2s ease;
-    }
+.source-card {
+    background-color: #101a29;
+    border: 1px solid #1c3048;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
 
-    .tool-icon {
-        font-size: 26px;
-        margin-bottom: 12px;
-    }
+.stButton > button {
+    border-radius: 9px;
+    border: 1px solid #23415f;
+    background-color: #102238;
+    color: #dbeafe;
+    font-weight: 600;
+}
 
-    .tool-title {
-        font-size: 17px;
-        font-weight: 700;
-        margin-bottom: 6px;
-    }
+.stButton > button:hover {
+    border-color: #38bdf8;
+    color: #38bdf8;
+}
 
-    .tool-description {
-        color: #7f8da1;
-        font-size: 13px;
-        line-height: 1.45;
-    }
+#MainMenu {
+    visibility: hidden;
+}
 
-    /* ==============================================
-       STATS
-       ============================================== */
+footer {
+    visibility: hidden;
+}
 
-    .stat-card {
-        background: #0e1725;
-        border: 1px solid #1c2b40;
-        border-radius: 14px;
-        padding: 16px 18px;
-        text-align: center;
-    }
-
-    .stat-number {
-        color: #38bdf8;
-        font-size: 24px;
-        font-weight: 800;
-    }
-
-    .stat-label {
-        color: #748196;
-        font-size: 12px;
-        margin-top: 3px;
-    }
-
-    /* ==============================================
-       WORKSPACE
-       ============================================== */
-
-    .workspace {
-        background: #0d1624;
-        border: 1px solid #1c2b40;
-        border-radius: 18px;
-        padding: 24px;
-        margin-top: 22px;
-    }
-
-    .workspace-title {
-        font-size: 23px;
-        font-weight: 750;
-    }
-
-    .workspace-description {
-        color: #7e8b9e;
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-
-    /* ==============================================
-       SOURCES
-       ============================================== */
-
-    .source-card {
-        background: #101a29;
-        border: 1px solid #1c3048;
-        border-radius: 10px;
-        padding: 12px 15px;
-        margin-bottom: 8px;
-        color: #c8d2df;
-    }
-
-    /* ==============================================
-       DIVIDER
-       ============================================== */
-
-    .divider {
-        height: 1px;
-        background: #1b2a3d;
-        margin: 25px 0;
-    }
-
-    /* ==============================================
-       BUTTONS
-       ============================================== */
-
-    .stButton > button {
-        border-radius: 9px;
-        border: 1px solid #23415f;
-        background: #102238;
-        color: #dbeafe;
-        font-weight: 600;
-    }
-
-    .stButton > button:hover {
-        border-color: #38bdf8;
-        color: #38bdf8;
-    }
-
-    /* ==============================================
-       CHAT
-       ============================================== */
-
-    [data-testid="stChatMessage"] {
-        border-radius: 12px;
-    }
-
-    /* ==============================================
-       HIDE STREAMLIT BRANDING
-       ============================================== */
-
-    #MainMenu {
-        visibility: hidden;
-    }
-
-    footer {
-        visibility: hidden;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+</style>
+""", unsafe_allow_html=True)
 
 
 # ==================================================
-# GROQ
+# GROQ CLIENT
 # ==================================================
 
 @st.cache_resource
 def create_groq_client():
-
     return Groq(
         api_key=st.secrets["GROQ_API_KEY"]
     )
@@ -291,6 +212,12 @@ if "documents" not in st.session_state:
 if "tool" not in st.session_state:
     st.session_state.tool = "Chat"
 
+if "summary" not in st.session_state:
+    st.session_state.summary = ""
+
+if "questions" not in st.session_state:
+    st.session_state.questions = ""
+
 
 # ==================================================
 # SIDEBAR
@@ -298,24 +225,17 @@ if "tool" not in st.session_state:
 
 with st.sidebar:
 
-    st.markdown(
-        """
-        <div class="brand">
-            📚 Study<span>AI</span>
-        </div>
+    st.markdown("""
+    <div class="brand">
+        📚 Study<span>AI</span>
+    </div>
 
-        <div class="brand-sub">
-            Your personal AI study assistant
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    <div class="brand-sub">
+        Your personal AI study assistant
+    </div>
+    """, unsafe_allow_html=True)
 
     st.divider()
-
-    # ------------------------------
-    # Upload
-    # ------------------------------
 
     st.markdown("### 📂 Documents")
 
@@ -335,9 +255,7 @@ with st.sidebar:
             all_chunks = []
             document_names = []
 
-            with st.spinner(
-                "Processing documents..."
-            ):
+            with st.spinner("Processing documents..."):
 
                 for uploaded_file in uploaded_files:
 
@@ -345,9 +263,7 @@ with st.sidebar:
                         uploaded_file.name
                     )
 
-                    pages = load_pdf(
-                        uploaded_file
-                    )
+                    pages = load_pdf(uploaded_file)
 
                     for page in pages:
 
@@ -369,13 +285,11 @@ with st.sidebar:
 
                             if chunk_text.strip():
 
-                                all_chunks.append(
-                                    {
-                                        "text": chunk_text.strip(),
-                                        "page": page["page"],
-                                        "document": uploaded_file.name
-                                    }
-                                )
+                                all_chunks.append({
+                                    "text": chunk_text.strip(),
+                                    "page": page["page"],
+                                    "document": uploaded_file.name
+                                })
 
             if all_chunks:
 
@@ -388,9 +302,7 @@ with st.sidebar:
                         for chunk in all_chunks
                     ]
 
-                    embeddings = create_embeddings(
-                        texts
-                    )
+                    embeddings = create_embeddings(texts)
 
                     index = create_vector_store(
                         embeddings
@@ -407,20 +319,14 @@ with st.sidebar:
             else:
 
                 st.error(
-                    "No readable text found."
+                    "No readable text found in the PDF."
                 )
-
-    # ------------------------------
-    # Documents
-    # ------------------------------
 
     if st.session_state.documents:
 
         st.divider()
 
-        st.markdown(
-            "### Your Files"
-        )
+        st.markdown("### Your Files")
 
         for document in st.session_state.documents:
 
@@ -428,14 +334,10 @@ with st.sidebar:
                 f"📄 {document}"
             )
 
-    # ------------------------------
-    # Clear
-    # ------------------------------
-
     st.divider()
 
     if st.button(
-        "Clear Conversation",
+        "🗑️ Clear Conversation",
         use_container_width=True
     ):
 
@@ -448,55 +350,478 @@ with st.sidebar:
 # HERO
 # ==================================================
 
-st.markdown(
-    """
-    <div class="hero">
+st.markdown("""
+<div class="hero">
 
-        <div class="hero-small">
-            AI STUDY PLATFORM
+    <div class="hero-small">
+        AI STUDY PLATFORM
+    </div>
+
+    <div class="hero-title">
+        Study smarter.<br>
+        Learn faster.
+    </div>
+
+    <div class="hero-description">
+        Upload your study material and use AI to
+        understand, summarize, and prepare for exams.
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+# ==================================================
+# STUDY TOOLS
+# ==================================================
+
+st.markdown("### Choose your study tool")
+
+st.caption(
+    "Select a tool to work with your uploaded study material."
+)
+
+col1, col2, col3 = st.columns(3)
+
+
+# --------------------------------------------------
+# CHAT CARD
+# --------------------------------------------------
+
+with col1:
+
+    st.markdown("""
+    <div class="tool-card">
+
+        <div class="tool-icon">💬</div>
+
+        <div class="tool-title">
+            Ask Questions
         </div>
 
-        <div class="hero-title">
-            Study smarter.<br>
-            Learn faster.
-        </div>
-
-        <div class="hero-description">
-            Upload your study material and use AI to understand,
-            summarize, and prepare for your exams.
+        <div class="tool-description">
+            Ask questions about your documents
+            and get answers using RAG.
         </div>
 
     </div>
-    """,
+    """, unsafe_allow_html=True)
+
+    if st.button(
+        "Open Chat",
+        key="open_chat",
+        use_container_width=True
+    ):
+
+        st.session_state.tool = "Chat"
+        st.rerun()
+
+
+# --------------------------------------------------
+# SUMMARY CARD
+# --------------------------------------------------
+
+with col2:
+
+    st.markdown("""
+    <div class="tool-card">
+
+        <div class="tool-icon">📄</div>
+
+        <div class="tool-title">
+            Summarize Document
+        </div>
+
+        <div class="tool-description">
+            Convert your study material into
+            simple and exam-focused notes.
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button(
+        "Open Summarizer",
+        key="open_summary",
+        use_container_width=True
+    ):
+
+        st.session_state.tool = "Summarize Document"
+        st.rerun()
+
+
+# --------------------------------------------------
+# QUESTIONS CARD
+# --------------------------------------------------
+
+with col3:
+
+    st.markdown("""
+    <div class="tool-card">
+
+        <div class="tool-icon">📝</div>
+
+        <div class="tool-title">
+            Exam Questions
+        </div>
+
+        <div class="tool-description">
+            Generate short and long questions
+            from your uploaded study material.
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button(
+        "Open Generator",
+        key="open_questions",
+        use_container_width=True
+    ):
+
+        st.session_state.tool = "Generate Questions"
+        st.rerun()
+
+
+# ==================================================
+# DOCUMENT CHECK
+# ==================================================
+
+if not st.session_state.chunks:
+
+    st.markdown("""
+    <div class="workspace">
+
+        <div class="workspace-title">
+            👋 Welcome to StudyAI
+        </div>
+
+        <div class="workspace-description">
+            Upload a PDF from the sidebar and click
+            "Process Documents" to start studying.
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.stop()
+
+
+# ==================================================
+# STATISTICS
+# ==================================================
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+stat1, stat2, stat3 = st.columns(3)
+
+with stat1:
+
+    st.markdown(f"""
+    <div class="stat-card">
+
+        <div class="stat-number">
+            {len(st.session_state.documents)}
+        </div>
+
+        <div class="stat-label">
+            Documents
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+
+with stat2:
+
+    st.markdown(f"""
+    <div class="stat-card">
+
+        <div class="stat-number">
+            {len(st.session_state.chunks)}
+        </div>
+
+        <div class="stat-label">
+            Knowledge Chunks
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+
+with stat3:
+
+    st.markdown("""
+    <div class="stat-card">
+
+        <div class="stat-number">
+            GPT-OSS 120B
+        </div>
+
+        <div class="stat-label">
+            Powered by Groq
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ==================================================
+# GROQ CLIENT
+# ==================================================
+
+client = create_groq_client()
+
+
+# ==================================================
+# MAIN WORKSPACE
+# ==================================================
+
+st.markdown(
+    '<div class="workspace">',
     unsafe_allow_html=True
 )
 
 
 # ==================================================
-# TOOL SELECTION
+# CHAT
+# ==================================================
+
+if st.session_state.tool == "Chat":
+
+    st.markdown(
+        '<div class="workspace-title">💬 Study Chat</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="workspace-description">'
+        'Ask questions and explore your uploaded material.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    for message in st.session_state.messages:
+
+        with st.chat_message(
+            message["role"]
+        ):
+
+            st.markdown(
+                message["content"]
+            )
+
+    question = st.chat_input(
+        "Ask something about your material..."
+    )
+
+    if question:
+
+        st.session_state.messages.append({
+            "role": "user",
+            "content": question
+        })
+
+        with st.chat_message("user"):
+
+            st.markdown(question)
+
+        with st.chat_message("assistant"):
+
+            with st.spinner(
+                "Searching your study material..."
+            ):
+
+                try:
+
+                    retrieved_chunks = retrieve_context(
+                        question,
+                        st.session_state.vector_store,
+                        st.session_state.chunks,
+                        top_k=5
+                    )
+
+                    answer = generate_answer(
+                        client,
+                        question,
+                        retrieved_chunks
+                    )
+
+                    st.markdown(answer)
+
+                    with st.expander(
+                        "📚 View Sources"
+                    ):
+
+                        for chunk in retrieved_chunks:
+
+                            st.markdown(
+                                f"""
+                                <div class="source-card">
+                                    📄 <b>{chunk["document"]}</b>
+                                    &nbsp; • &nbsp;
+                                    Page {chunk["page"]}
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": answer
+                    })
+
+                except Exception as e:
+
+                    st.error(
+                        f"Something went wrong: {str(e)}"
+                    )
+
+
+# ==================================================
+# SUMMARY
+# ==================================================
+
+elif st.session_state.tool == "Summarize Document":
+
+    st.markdown(
+        '<div class="workspace-title">'
+        '📄 Document Summarizer'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="workspace-description">'
+        'Create concise and exam-friendly notes.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    if st.button(
+        "✨ Generate Summary",
+        key="generate_summary",
+        use_container_width=True
+    ):
+
+        with st.spinner(
+            "Creating your summary..."
+        ):
+
+            try:
+
+                context = "\n\n".join(
+                    chunk["text"]
+                    for chunk in st.session_state.chunks
+                )
+
+                st.session_state.summary = generate_summary(
+                    client,
+                    context
+                )
+
+            except Exception as e:
+
+                st.error(
+                    f"Could not generate summary: {str(e)}"
+                )
+
+    if st.session_state.summary:
+
+        st.markdown("### 📖 Summary")
+
+        st.markdown(
+            st.session_state.summary
+        )
+
+
+# ==================================================
+# QUESTIONS
+# ==================================================
+
+elif st.session_state.tool == "Generate Questions":
+
+    st.markdown(
+        '<div class="workspace-title">'
+        '📝 Exam Question Generator'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="workspace-description">'
+        'Generate university-level questions from your material.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    qcol1, qcol2 = st.columns(2)
+
+    with qcol1:
+
+        question_type = st.selectbox(
+            "Question Type",
+            ["short", "long"],
+            key="question_type"
+        )
+
+    with qcol2:
+
+        number = st.number_input(
+            "Number of Questions",
+            min_value=1,
+            max_value=20,
+            value=10,
+            step=1,
+            key="question_number"
+        )
+
+    if st.button(
+        "✨ Generate Questions",
+        key="generate_questions",
+        use_container_width=True
+    ):
+
+        with st.spinner(
+            "Generating questions..."
+        ):
+
+            try:
+
+                context = "\n\n".join(
+                    chunk["text"]
+                    for chunk in st.session_state.chunks
+                )
+
+                st.session_state.questions = generate_questions(
+                    client,
+                    context,
+                    question_type,
+                    number
+                )
+
+            except Exception as e:
+
+                st.error(
+                    f"Could not generate questions: {str(e)}"
+                )
+
+    if st.session_state.questions:
+
+        st.markdown(
+            "### 📋 Generated Questions"
+        )
+
+        st.markdown(
+            st.session_state.questions
+        )
+
+
+# ==================================================
+# CLOSE WORKSPACE
 # ==================================================
 
 st.markdown(
-    "### Choose your study tool"
+    "</div>",
+    unsafe_allow_html=True
 )
-
-st.caption(
-    "Select what you want to do with your study material."
-)
-
-tool_col1, tool_col2, tool_col3 = st.columns(3)
-
-
-# CHAT TOOL
-
-with tool_col1:
-
-    st.markdown(
-        """
-        <div class="tool-card">
-
-            <div class="tool-icon">💬</div>
-
-            <div class="tool-title">
-                Ask
-
