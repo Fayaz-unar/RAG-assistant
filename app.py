@@ -8,63 +8,250 @@ from src.rag import retrieve_context, generate_answer
 from src.study_tools import generate_summary, generate_questions
 
 
-# --------------------------------------------------
-# Page Configuration
-# --------------------------------------------------
+# ==================================================
+# PAGE CONFIG
+# ==================================================
 
 st.set_page_config(
-    page_title="RAG Study Assistant",
+    page_title="StudyAI",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 
-# --------------------------------------------------
-# Custom CSS
-# --------------------------------------------------
+# ==================================================
+# CUSTOM CSS
+# ==================================================
 
 st.markdown(
     """
     <style>
-    
+
+    /* ==============================================
+       GLOBAL
+       ============================================== */
+
+    .stApp {
+        background: #080d16;
+        color: #e8edf5;
+    }
+
     .block-container {
-        max-width: 1200px;
+        max-width: 1350px;
         padding-top: 2rem;
-        padding-bottom: 3rem;
+        padding-bottom: 4rem;
     }
 
-    .app-title {
-        font-size: 42px;
+    /* ==============================================
+       SIDEBAR
+       ============================================== */
+
+    section[data-testid="stSidebar"] {
+        background: #0b1220;
+        border-right: 1px solid #1c2a3d;
+    }
+
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 1.8rem;
+    }
+
+    /* ==============================================
+       BRAND
+       ============================================== */
+
+    .brand {
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .brand span {
+        color: #38bdf8;
+    }
+
+    .brand-sub {
+        color: #718096;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+
+    /* ==============================================
+       HERO
+       ============================================== */
+
+    .hero {
+        padding: 25px 0 15px 0;
+    }
+
+    .hero-small {
+        color: #38bdf8;
+        font-size: 13px;
         font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .app-subtitle {
-        font-size: 18px;
-        opacity: 0.7;
-        margin-bottom: 30px;
-    }
-
-    .info-card {
-        padding: 20px;
-        border-radius: 14px;
-        border: 1px solid rgba(128, 128, 128, 0.25);
-        margin-bottom: 15px;
-    }
-
-    .source-card {
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(128, 128, 128, 0.20);
+        letter-spacing: 2px;
+        text-transform: uppercase;
         margin-bottom: 8px;
     }
 
-    .metric-card {
-        padding: 18px;
+    .hero-title {
+        font-size: 44px;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1.5px;
+        margin: 0;
+    }
+
+    .hero-description {
+        color: #8b98aa;
+        font-size: 16px;
+        margin-top: 12px;
+        max-width: 700px;
+        line-height: 1.6;
+    }
+
+    /* ==============================================
+       TOOL CARDS
+       ============================================== */
+
+    .tool-card {
+        background: linear-gradient(
+            145deg,
+            #101a2b,
+            #0c1422
+        );
+
+        border: 1px solid #1d3048;
+        border-radius: 16px;
+
+        padding: 22px;
+
+        height: 145px;
+
+        transition: all 0.2s ease;
+    }
+
+    .tool-icon {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+
+    .tool-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .tool-description {
+        color: #7f8da1;
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
+    /* ==============================================
+       STATS
+       ============================================== */
+
+    .stat-card {
+        background: #0e1725;
+        border: 1px solid #1c2b40;
         border-radius: 14px;
-        border: 1px solid rgba(128, 128, 128, 0.25);
+        padding: 16px 18px;
         text-align: center;
+    }
+
+    .stat-number {
+        color: #38bdf8;
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    .stat-label {
+        color: #748196;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    /* ==============================================
+       WORKSPACE
+       ============================================== */
+
+    .workspace {
+        background: #0d1624;
+        border: 1px solid #1c2b40;
+        border-radius: 18px;
+        padding: 24px;
+        margin-top: 22px;
+    }
+
+    .workspace-title {
+        font-size: 23px;
+        font-weight: 750;
+    }
+
+    .workspace-description {
+        color: #7e8b9e;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    /* ==============================================
+       SOURCES
+       ============================================== */
+
+    .source-card {
+        background: #101a29;
+        border: 1px solid #1c3048;
+        border-radius: 10px;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        color: #c8d2df;
+    }
+
+    /* ==============================================
+       DIVIDER
+       ============================================== */
+
+    .divider {
+        height: 1px;
+        background: #1b2a3d;
+        margin: 25px 0;
+    }
+
+    /* ==============================================
+       BUTTONS
+       ============================================== */
+
+    .stButton > button {
+        border-radius: 9px;
+        border: 1px solid #23415f;
+        background: #102238;
+        color: #dbeafe;
+        font-weight: 600;
+    }
+
+    .stButton > button:hover {
+        border-color: #38bdf8;
+        color: #38bdf8;
+    }
+
+    /* ==============================================
+       CHAT
+       ============================================== */
+
+    [data-testid="stChatMessage"] {
+        border-radius: 12px;
+    }
+
+    /* ==============================================
+       HIDE STREAMLIT BRANDING
+       ============================================== */
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
     }
 
     </style>
@@ -73,20 +260,21 @@ st.markdown(
 )
 
 
-# --------------------------------------------------
-# Groq Client
-# --------------------------------------------------
+# ==================================================
+# GROQ
+# ==================================================
 
 @st.cache_resource
 def create_groq_client():
+
     return Groq(
         api_key=st.secrets["GROQ_API_KEY"]
     )
 
 
-# --------------------------------------------------
-# Session State
-# --------------------------------------------------
+# ==================================================
+# SESSION STATE
+# ==================================================
 
 if "chunks" not in st.session_state:
     st.session_state.chunks = []
@@ -100,35 +288,39 @@ if "messages" not in st.session_state:
 if "documents" not in st.session_state:
     st.session_state.documents = []
 
-
-# --------------------------------------------------
-# Header
-# --------------------------------------------------
-
-st.markdown(
-    '<div class="app-title">📚 RAG Study Assistant</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="app-subtitle">'
-    'Your AI-powered study companion for documents, '
-    'summaries, and exam preparation.'
-    '</div>',
-    unsafe_allow_html=True
-)
+if "tool" not in st.session_state:
+    st.session_state.tool = "Chat"
 
 
-# --------------------------------------------------
-# Sidebar
-# --------------------------------------------------
+# ==================================================
+# SIDEBAR
+# ==================================================
 
 with st.sidebar:
 
-    st.header("📂 Study Material")
+    st.markdown(
+        """
+        <div class="brand">
+            📚 Study<span>AI</span>
+        </div>
+
+        <div class="brand-sub">
+            Your personal AI study assistant
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.divider()
+
+    # ------------------------------
+    # Upload
+    # ------------------------------
+
+    st.markdown("### 📂 Documents")
 
     uploaded_files = st.file_uploader(
-        "Upload PDF files",
+        "Upload your study material",
         type=["pdf"],
         accept_multiple_files=True
     )
@@ -136,7 +328,7 @@ with st.sidebar:
     if uploaded_files:
 
         if st.button(
-            "Process Documents",
+            "⚡ Process Documents",
             use_container_width=True
         ):
 
@@ -144,7 +336,7 @@ with st.sidebar:
             document_names = []
 
             with st.spinner(
-                "Processing your study material..."
+                "Processing documents..."
             ):
 
                 for uploaded_file in uploaded_files:
@@ -161,7 +353,6 @@ with st.sidebar:
 
                         text = page["text"]
 
-                        # Simple overlapping chunks
                         chunk_size = 1000
                         overlap = 150
                         step = chunk_size - overlap
@@ -189,7 +380,7 @@ with st.sidebar:
             if all_chunks:
 
                 with st.spinner(
-                    "Creating document embeddings..."
+                    "Building knowledge base..."
                 ):
 
                     texts = [
@@ -210,33 +401,26 @@ with st.sidebar:
                     st.session_state.documents = document_names
 
                 st.success(
-                    f"Processed {len(all_chunks)} chunks."
+                    f"{len(all_chunks)} chunks ready"
                 )
 
             else:
 
                 st.error(
-                    "No readable text was found in the uploaded files."
+                    "No readable text found."
                 )
 
-    st.divider()
-
-    st.header("🛠️ Study Tools")
-
-    tool = st.radio(
-        "Choose a tool",
-        [
-            "Chat",
-            "Summarize Document",
-            "Generate Questions"
-        ]
-    )
-
-    st.divider()
+    # ------------------------------
+    # Documents
+    # ------------------------------
 
     if st.session_state.documents:
 
-        st.subheader("📚 Documents")
+        st.divider()
+
+        st.markdown(
+            "### Your Files"
+        )
 
         for document in st.session_state.documents:
 
@@ -244,17 +428,14 @@ with st.sidebar:
                 f"📄 {document}"
             )
 
+    # ------------------------------
+    # Clear
+    # ------------------------------
+
     st.divider()
 
-    if st.session_state.chunks:
-
-        st.metric(
-            "Study Chunks",
-            len(st.session_state.chunks)
-        )
-
     if st.button(
-        "🗑️ Clear Chat",
+        "Clear Conversation",
         use_container_width=True
     ):
 
@@ -263,263 +444,59 @@ with st.sidebar:
         st.rerun()
 
 
-# --------------------------------------------------
-# No Documents
-# --------------------------------------------------
+# ==================================================
+# HERO
+# ==================================================
 
-if not st.session_state.chunks:
+st.markdown(
+    """
+    <div class="hero">
 
-    st.info(
-        "👈 Upload your study material from the sidebar "
-        "and click **Process Documents** to begin."
-    )
+        <div class="hero-small">
+            AI STUDY PLATFORM
+        </div>
+
+        <div class="hero-title">
+            Study smarter.<br>
+            Learn faster.
+        </div>
+
+        <div class="hero-description">
+            Upload your study material and use AI to understand,
+            summarize, and prepare for your exams.
+        </div>
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ==================================================
+# TOOL SELECTION
+# ==================================================
+
+st.markdown(
+    "### Choose your study tool"
+)
+
+st.caption(
+    "Select what you want to do with your study material."
+)
+
+tool_col1, tool_col2, tool_col3 = st.columns(3)
+
+
+# CHAT TOOL
+
+with tool_col1:
 
     st.markdown(
         """
-        ### What can you do?
+        <div class="tool-card">
 
-        **💬 Chat**  
-        Ask questions about your study material.
+            <div class="tool-icon">💬</div>
 
-        **📄 Summarize Document**  
-        Generate clear, exam-friendly summaries.
+            <div class="tool-title">
+                Ask
 
-        **📝 Generate Questions**  
-        Create short and long questions from your material.
-        """
-    )
-
-    st.stop()
-
-
-# --------------------------------------------------
-# Groq Client
-# --------------------------------------------------
-
-client = create_groq_client()
-
-
-# --------------------------------------------------
-# CHAT
-# --------------------------------------------------
-
-if tool == "Chat":
-
-    st.subheader("💬 Ask Your Study Material")
-
-    st.caption(
-        "Ask questions about the documents you uploaded."
-    )
-
-    for message in st.session_state.messages:
-
-        with st.chat_message(
-            message["role"]
-        ):
-
-            st.markdown(
-                message["content"]
-            )
-
-    question = st.chat_input(
-        "Ask a question about your study material..."
-    )
-
-    if question:
-
-        st.session_state.messages.append(
-            {
-                "role": "user",
-                "content": question
-            }
-        )
-
-        with st.chat_message("user"):
-
-            st.markdown(question)
-
-        with st.chat_message("assistant"):
-
-            with st.spinner(
-                "Searching your study material..."
-            ):
-
-                try:
-
-                    retrieved_chunks = retrieve_context(
-                        question,
-                        st.session_state.vector_store,
-                        st.session_state.chunks,
-                        top_k=5
-                    )
-
-                    answer = generate_answer(
-                        client,
-                        question,
-                        retrieved_chunks
-                    )
-
-                    st.markdown(answer)
-
-                    with st.expander(
-                        "📚 View Sources"
-                    ):
-
-                        for chunk in retrieved_chunks:
-
-                            st.markdown(
-                                f"""
-                                <div class="source-card">
-                                <b>{chunk["document"]}</b>
-                                — Page {chunk["page"]}
-                                </div>
-                                """,
-                                unsafe_allow_html=True
-                            )
-
-                            st.caption(
-                                chunk["text"][:400]
-                            )
-
-                    st.session_state.messages.append(
-                        {
-                            "role": "assistant",
-                            "content": answer
-                        }
-                    )
-
-                except Exception as e:
-
-                    st.error(
-                        f"Something went wrong: {str(e)}"
-                    )
-
-
-# --------------------------------------------------
-# SUMMARIZE DOCUMENT
-# --------------------------------------------------
-
-elif tool == "Summarize Document":
-
-    st.subheader("📄 Document Summary")
-
-    st.caption(
-        "Generate an exam-friendly summary from your study material."
-    )
-
-    if st.button(
-        "✨ Generate Summary",
-        use_container_width=True
-    ):
-
-        with st.spinner(
-            "Analyzing your study material..."
-        ):
-
-            try:
-
-                context = "\n\n".join(
-                    chunk["text"]
-                    for chunk in st.session_state.chunks
-                )
-
-                summary = generate_summary(
-                    client,
-                    context
-                )
-
-                st.markdown(
-                    "### 📖 Summary"
-                )
-
-                st.markdown(summary)
-
-            except Exception as e:
-
-                st.error(
-                    f"Could not generate summary: {str(e)}"
-                )
-
-
-# --------------------------------------------------
-# GENERATE QUESTIONS
-# --------------------------------------------------
-
-elif tool == "Generate Questions":
-
-    st.subheader("📝 Generate Exam Questions")
-
-    st.caption(
-        "Create questions based on your uploaded study material."
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        question_type = st.selectbox(
-            "Question Type",
-            [
-                "short",
-                "long"
-            ]
-        )
-
-    with col2:
-
-        number = st.number_input(
-            "Number of Questions",
-            min_value=1,
-            max_value=20,
-            value=10,
-            step=1
-        )
-
-    if question_type == "short":
-
-        st.info(
-            "Short questions focus on definitions, concepts, "
-            "differences, functions, and brief explanations."
-        )
-
-    else:
-
-        st.info(
-            "Long questions focus on detailed explanations, "
-            "comparisons, processes, architecture, and applications."
-        )
-
-    if st.button(
-        "✨ Generate Questions",
-        use_container_width=True
-    ):
-
-        with st.spinner(
-            "Generating exam questions..."
-        ):
-
-            try:
-
-                context = "\n\n".join(
-                    chunk["text"]
-                    for chunk in st.session_state.chunks
-                )
-
-                questions = generate_questions(
-                    client,
-                    context,
-                    question_type,
-                    number
-                )
-
-                st.markdown(
-                    "### 📋 Generated Questions"
-                )
-
-                st.markdown(questions)
-
-            except Exception as e:
-
-                st.error(
-                    f"Could not generate questions: {str(e)}"
-                )
