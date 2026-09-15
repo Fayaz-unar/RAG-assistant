@@ -15,7 +15,8 @@ from src.study_tools import generate_summary, generate_questions
 st.set_page_config(
     page_title="RAG Study Assistant",
     page_icon="📚",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 
@@ -23,46 +24,53 @@ st.set_page_config(
 # Custom CSS
 # --------------------------------------------------
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
+    
+    .block-container {
+        max-width: 1200px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
 
-.main {
-    padding-top: 1rem;
-}
+    .app-title {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
 
-.block-container {
-    max-width: 1200px;
-    padding-top: 2rem;
-}
+    .app-subtitle {
+        font-size: 18px;
+        opacity: 0.7;
+        margin-bottom: 30px;
+    }
 
-.app-title {
-    font-size: 42px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
+    .info-card {
+        padding: 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        margin-bottom: 15px;
+    }
 
-.app-subtitle {
-    font-size: 18px;
-    opacity: 0.7;
-    margin-bottom: 30px;
-}
+    .source-card {
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(128, 128, 128, 0.20);
+        margin-bottom: 8px;
+    }
 
-.card {
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(128,128,128,0.25);
-    margin-bottom: 15px;
-}
+    .metric-card {
+        padding: 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        text-align: center;
+    }
 
-.source {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(128,128,128,0.2);
-    margin-bottom: 8px;
-}
-
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # --------------------------------------------------
@@ -89,6 +97,9 @@ if "vector_store" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "documents" not in st.session_state:
+    st.session_state.documents = []
+
 
 # --------------------------------------------------
 # Header
@@ -101,8 +112,8 @@ st.markdown(
 
 st.markdown(
     '<div class="app-subtitle">'
-    'Your AI-powered study companion for documents, summaries, '
-    'and exam preparation.'
+    'Your AI-powered study companion for documents, '
+    'summaries, and exam preparation.'
     '</div>',
     unsafe_allow_html=True
 )
@@ -130,23 +141,35 @@ with st.sidebar:
         ):
 
             all_chunks = []
+            document_names = []
 
-            with st.spinner("Processing your study material..."):
+            with st.spinner(
+                "Processing your study material..."
+            ):
 
                 for uploaded_file in uploaded_files:
 
-                    pages = load_pdf(uploaded_file)
+                    document_names.append(
+                        uploaded_file.name
+                    )
+
+                    pages = load_pdf(
+                        uploaded_file
+                    )
 
                     for page in pages:
 
                         text = page["text"]
 
+                        # Simple overlapping chunks
                         chunk_size = 1000
+                        overlap = 150
+                        step = chunk_size - overlap
 
                         for start in range(
                             0,
                             len(text),
-                            chunk_size
+                            step
                         ):
 
                             chunk_text = text[
@@ -155,20 +178,28 @@ with st.sidebar:
 
                             if chunk_text.strip():
 
-                                all_chunks.append({
-                                    "text": chunk_text.strip(),
-                                    "page": page["page"],
-                                    "document": uploaded_file.name
-                                })
+                                all_chunks.append(
+                                    {
+                                        "text": chunk_text.strip(),
+                                        "page": page["page"],
+                                        "document": uploaded_file.name
+                                    }
+                                )
 
-                if all_chunks:
+            if all_chunks:
+
+                with st.spinner(
+                    "Creating document embeddings..."
+                ):
 
                     texts = [
                         chunk["text"]
                         for chunk in all_chunks
                     ]
 
-                    embeddings = create_embeddings(texts)
+                    embeddings = create_embeddings(
+                        texts
+                    )
 
                     index = create_vector_store(
                         embeddings
@@ -176,16 +207,17 @@ with st.sidebar:
 
                     st.session_state.chunks = all_chunks
                     st.session_state.vector_store = index
+                    st.session_state.documents = document_names
 
-                    st.success(
-                        f"{len(all_chunks)} chunks processed."
-                    )
+                st.success(
+                    f"Processed {len(all_chunks)} chunks."
+                )
 
-                else:
+            else:
 
-                    st.error(
-                        "No readable text was found."
-                    )
+                st.error(
+                    "No readable text was found in the uploaded files."
+                )
 
     st.divider()
 
@@ -199,6 +231,18 @@ with st.sidebar:
             "Generate Questions"
         ]
     )
+
+    st.divider()
+
+    if st.session_state.documents:
+
+        st.subheader("📚 Documents")
+
+        for document in st.session_state.documents:
+
+            st.caption(
+                f"📄 {document}"
+            )
 
     st.divider()
 
@@ -220,7 +264,7 @@ with st.sidebar:
 
 
 # --------------------------------------------------
-# Check Documents
+# No Documents
 # --------------------------------------------------
 
 if not st.session_state.chunks:
@@ -230,8 +274,27 @@ if not st.session_state.chunks:
         "and click **Process Documents** to begin."
     )
 
+    st.markdown(
+        """
+        ### What can you do?
+
+        **💬 Chat**  
+        Ask questions about your study material.
+
+        **📄 Summarize Document**  
+        Generate clear, exam-friendly summaries.
+
+        **📝 Generate Questions**  
+        Create short and long questions from your material.
+        """
+    )
+
     st.stop()
 
+
+# --------------------------------------------------
+# Groq Client
+# --------------------------------------------------
 
 client = create_groq_client()
 
@@ -250,27 +313,36 @@ if tool == "Chat":
 
     for message in st.session_state.messages:
 
-        with st.chat_message(message["role"]):
+        with st.chat_message(
+            message["role"]
+        ):
 
-            st.markdown(message["content"])
+            st.markdown(
+                message["content"]
+            )
 
     question = st.chat_input(
-        "Ask a question..."
+        "Ask a question about your study material..."
     )
 
     if question:
 
-        st.session_state.messages.append({
-            "role": "user",
-            "content": question
-        })
+        st.session_state.messages.append(
+            {
+                "role": "user",
+                "content": question
+            }
+        )
 
         with st.chat_message("user"):
+
             st.markdown(question)
 
         with st.chat_message("assistant"):
 
-            with st.spinner("Searching your study material..."):
+            with st.spinner(
+                "Searching your study material..."
+            ):
 
                 try:
 
@@ -289,24 +361,32 @@ if tool == "Chat":
 
                     st.markdown(answer)
 
-                    with st.expander("📚 Sources"):
+                    with st.expander(
+                        "📚 View Sources"
+                    ):
 
                         for chunk in retrieved_chunks:
 
                             st.markdown(
                                 f"""
-                                <div class="source">
-                                <b>{chunk['document']}</b>
-                                — Page {chunk['page']}
+                                <div class="source-card">
+                                <b>{chunk["document"]}</b>
+                                — Page {chunk["page"]}
                                 </div>
                                 """,
                                 unsafe_allow_html=True
                             )
 
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": answer
-                    })
+                            st.caption(
+                                chunk["text"][:400]
+                            )
+
+                    st.session_state.messages.append(
+                        {
+                            "role": "assistant",
+                            "content": answer
+                        }
+                    )
 
                 except Exception as e:
 
@@ -316,7 +396,7 @@ if tool == "Chat":
 
 
 # --------------------------------------------------
-# SUMMARIZE
+# SUMMARIZE DOCUMENT
 # --------------------------------------------------
 
 elif tool == "Summarize Document":
@@ -328,7 +408,7 @@ elif tool == "Summarize Document":
     )
 
     if st.button(
-        "Generate Summary",
+        "✨ Generate Summary",
         use_container_width=True
     ):
 
@@ -338,8 +418,6 @@ elif tool == "Summarize Document":
 
             try:
 
-                # Limit context to avoid unnecessarily
-                # huge requests.
                 context = "\n\n".join(
                     chunk["text"]
                     for chunk in st.session_state.chunks
@@ -348,6 +426,10 @@ elif tool == "Summarize Document":
                 summary = generate_summary(
                     client,
                     context
+                )
+
+                st.markdown(
+                    "### 📖 Summary"
                 )
 
                 st.markdown(summary)
@@ -389,16 +471,31 @@ elif tool == "Generate Questions":
             "Number of Questions",
             min_value=1,
             max_value=20,
-            value=10
+            value=10,
+            step=1
+        )
+
+    if question_type == "short":
+
+        st.info(
+            "Short questions focus on definitions, concepts, "
+            "differences, functions, and brief explanations."
+        )
+
+    else:
+
+        st.info(
+            "Long questions focus on detailed explanations, "
+            "comparisons, processes, architecture, and applications."
         )
 
     if st.button(
-        "Generate Questions",
+        "✨ Generate Questions",
         use_container_width=True
     ):
 
         with st.spinner(
-            "Generating questions..."
+            "Generating exam questions..."
         ):
 
             try:
@@ -413,6 +510,10 @@ elif tool == "Generate Questions":
                     context,
                     question_type,
                     number
+                )
+
+                st.markdown(
+                    "### 📋 Generated Questions"
                 )
 
                 st.markdown(questions)
