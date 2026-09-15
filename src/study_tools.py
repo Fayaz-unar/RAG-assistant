@@ -1,4 +1,3 @@
-```python
 from .prompts import (
     create_summary_prompt,
     create_questions_prompt
@@ -54,4 +53,3 @@ def generate_questions(
     )
 
     return response.choices[0].message.content
-```
