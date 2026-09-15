@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 from groq import Groq
 
@@ -423,4 +422,3 @@ elif tool == "Generate Questions":
                 st.error(
                     f"Could not generate questions: {str(e)}"
                 )
-```
